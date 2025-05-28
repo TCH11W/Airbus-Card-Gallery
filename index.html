@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Airbus Card Collection</title>
+  <style>
+    body {{
+      font-family: sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }}
+    .card {{
+      position: relative;
+      width: 200px;
+      height: 300px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      overflow: hidden;
+      background-color: #ccc;
+      border: 5px solid transparent;
+    }}
+    .card.locked {{
+      background-image: none !important;
+      background-color: #ccc;
+    }}
+    .card.locked::before {{
+      content: '\1F512';
+      position: absolute;
+      font-size: 40px;
+      color: white;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }}
+    .shine {{
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+      animation: shine 2s ease-out forwards;
+    }}
+    @keyframes shine {{
+      to {{ left: 100%; }}
+    }}
+    .message {{
+      width: 100%;
+      text-align: center;
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+    }}
+  </style>
+</head>
+<body>
+  <div id="messages"></div>
+  <script>
+    const allCards = ['A220', 'A320', 'A330', 'A350', 'A380', 'A400M', 'BelugaXL', 'Concorde'];
+    const rimColors = {'A220': '#20c997', 'A320': '#20c997', 'A330': '#20c997', 'A350': '#20c997', 'A380': '#28a745', 'A400M': '#28a745', 'BelugaXL': '#6f42c1', 'Concorde': 'gold'};
+
+    let unlockedCards = JSON.parse(localStorage.getItem('unlockedCards') || '[]');
+    const urlParams = new URLSearchParams(window.location.search);
+    const newUnlocks = (urlParams.get('unlocked') || '').split(',').filter(Boolean);
+    const messages = document.getElementById('messages');
+
+    newUnlocks.forEach(card => {{
+      if (!unlockedCards.includes(card)) {{
+        unlockedCards.push(card);
+        const msg = document.createElement('div');
+        msg.className = 'message';
+        msg.textContent = `✨ You unlocked ${card}!`;
+        messages.appendChild(msg);
+      }}
+    }});
+    localStorage.setItem('unlockedCards', JSON.stringify(unlockedCards));
+
+    allCards.forEach(card => {{
+      const cardDiv = document.createElement('div');
+      cardDiv.className = 'card';
+
+      if (unlockedCards.includes(card)) {{
+        cardDiv.style.backgroundImage = `url(assets/cards/${card}.jpg)`;
+        cardDiv.innerHTML = '<div class="shine"></div>';
+      }} else {{
+        cardDiv.classList.add('locked');
+        cardDiv.style.borderColor = rimColors[card] || 'transparent';
+      }}
+
+      document.body.appendChild(cardDiv);
+    }});
+  </script>
+</body>
+</html>
