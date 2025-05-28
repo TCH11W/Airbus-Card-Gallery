@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Airbus Card Collection</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .card {
+      position: relative;
+      width: 200px;
+      height: 300px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+    .card.locked::before {
+      content: '\1F512'; /* lock emoji */
+      position: absolute;
+      font-size: 40px;
+      color: white;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .shine {
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+      animation: shine 2s ease-out forwards;
+    }
+    @keyframes shine {
+      to { left: 100%; }
+    }
+    .message {
+      width: 100%;
+      text-align: center;
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="messages"></div>
+
+  <script>
+    const allCards = ["A220", "A320", "A330", "A350", "A380", "A400M", "BelugaXL", "Concorde"];
+
+    // Extract unlocked cards from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const unlocked = (urlParams.get('unlocked') || '').split(',').filter(c => c);
+
+    const messages = document.getElementById('messages');
+
+    allCards.forEach(card => {
+      const cardDiv = document.createElement('div');
+      cardDiv.className = 'card';
+
+      if (unlocked.includes(card)) {
+        cardDiv.style.backgroundImage = `url(assets/cards/${card}.png)`;
+        cardDiv.innerHTML = '<div class="shine"></div>';
+
+        const msg = document.createElement('div');
+        msg.className = 'message';
+        msg.textContent = `✨ You unlocked ${card}!`;
+        messages.appendChild(msg);
+
+      } else {
+        cardDiv.classList.add('locked');
+        cardDiv.style.backgroundImage = `url(assets/cards/${card}_locked.png)`;
+      }
+
+      document.body.appendChild(cardDiv);
+    });
+  </script>
+</body>
+</html>
