@@ -1,0 +1,101 @@
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #2c2c2c;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 2rem;
+  gap: 1.5rem;
+}
+
+.card {
+  width: 300px;
+  height: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 12px rgba(0,0,0,0.4);
+  border: 8px solid transparent;
+  position: relative;
+  background-color: #888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+.card.teal { border-color: teal; }
+.card.green { border-color: green; }
+.card.purple { border-color: purple; }
+.card.gold { border-color: gold; }
+
+.card img.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: auto;
+  display: block;
+}
+
+.lock-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20%;
+  height: 20%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.lock-wrapper img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+@keyframes shine {
+  0% { box-shadow: 0 0 0px transparent; }
+  50% { box-shadow: 0 0 20px currentColor; }
+  100% { box-shadow: 0 0 0px transparent; }
+}
+
+.card.teal.shine { animation: shine 1.5s ease-out; color: teal; }
+.card.green.shine { animation: shine 1.5s ease-out; color: green; }
+.card.purple.shine { animation: shine 1.5s ease-out; color: purple; }
+.card.gold.shine { animation: shine 1.5s ease-out; color: gold; }
+
+/* Responsive tweaks for smaller screens */
+@media (max-width: 768px) {
+  .card {
+    width: 220px;
+    height: 300px;
+  }
+
+  .lock-wrapper {
+    width: 22%;
+    height: 22%;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: 180px;
+    height: 250px;
+  }
+
+  .lock-wrapper {
+    width: 25%;
+    height: 25%;
+  }
+}
